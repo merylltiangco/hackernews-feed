@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans", sans-serif;
+}
+
+a{
+  text-decoration: none;
+}
+
+.list-wrapper{
+  margin: 30px;
+  width: 100%;
+  background-color: #ececec;
+}
+
+.story-wrapper{
+  width: 100%;
+  padding: 15px;
+}
+
+.story-header{
+
+}
+
+.story-footer{
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.story-footer span{
+  margin-left: 3px;
+}
