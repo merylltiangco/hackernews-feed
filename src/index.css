@@ -1,33 +1,113 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Noto Sans", sans-serif;
+  background-color: #f7f9fa;
+  font-family: "Calibri", sans-serif;
+  overflow-x: hidden;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-.list-wrapper{
+.loader {
+  width: 100%;
+  margin-top: 25%;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+.loader .fa {
+  color: #fb6518;
+  font-size: 2.5em;
+}
+
+.app-header {
+  width: 100%;
+  position: relative;
+  background-color: #fb6518;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+}
+
+.app-logo {
+  border: 3px solid #fff;
+  width: 23px;
+  height: 23px;
+  margin: 0 auto;
+  padding: 5px;
+  ;
+}
+
+.app-logo span {
+  vertical-align: middle;
+  font-size: 18px;
+}
+
+.app-body {
+  padding: 30px 30px 40px 30px;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.list-wrapper {
   margin: 30px;
-  width: 100%;
-  background-color: #ececec;
+  border: 1px solid #f0f2f3;
+  background-color: #fff;
 }
 
-.story-wrapper{
-  width: 100%;
+.story-wrapper {
   padding: 15px;
+  border-bottom: 1px solid #f0f2f3;
 }
 
-.story-header{
-
+.story-header div {
+  width: 25px;
+  margin-right: 5px;
+  color: #919191;
+  float: left;
 }
 
-.story-footer{
-  margin-left: 5px;
-  font-size: 12px;
+.story-header a {
+  color: #000;
 }
 
-.story-footer span{
-  margin-left: 3px;
+.story-footer {
+  margin-left: 20px;
+  margin-top: 5px;
+  font-size: 11px;
+  color: #919191;
+}
+
+.story-footer a {
+  color: #919191;
+}
+
+.story-footer span.fa {
+  margin-right: 3px;
+}
+
+.story-footer div {
+  float: left;
+  margin-left: 10px;
+}
+
+.btn-container{
+  text-align: center;
+}
+
+.btn-load{
+  background-color: #fb6518;
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 100px;
+  border-radius: 4px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }

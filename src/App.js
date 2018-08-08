@@ -3,6 +3,9 @@ import rebase from "re-base";
 import firebase from "@firebase/app";
 import "@firebase/database";
 
+
+import Story from "./components/Story"
+
 //initialize db
 firebase.initializeApp({ databaseURL: "https://hacker-news.firebaseio.com" });
 let db = firebase.database();
@@ -20,6 +23,10 @@ function getUserLink(uname) {
   return `https://news.ycombinator.com/user?id=${uname}`;
 }
 
+function getItemLink(id) {
+  return `https://news.ycombinator.com/item?id=${id}`;
+}
+
 //components
 function fetchNewsStory(id, idx) {
   const rank = idx + 1;
@@ -28,6 +35,7 @@ function fetchNewsStory(id, idx) {
       then(data) {
         let item = data;
         item.userURL = getUserLink(item.by);
+        item.itemLink = getItemLink(item.id);
         item.rank = rank;
         item.comments = item.kids ? item.kids.length : 0;
         resolve(item);
@@ -38,51 +46,53 @@ function fetchNewsStory(id, idx) {
 
 class App extends Component {
   state = {
-    stories: []
+    allStories: [],
+    stories: [],
+    startIndex: 0,
+    endIndex: 0
   };
 
-  fetchStoryIds() {
-    return apiService.fetch(`/topstories`, {
+  fetchStoriesPerPage() {
+    let storyIds = this.state.allStories;
+    let actions = storyIds.slice(this.state.startIndex, this.state.endIndex).map(fetchNewsStory);
+    let results = Promise.all(actions);
+    results.then(data => this.setState({ stories: data }));
+  }
+  
+  handleClick() {
+    let lastIndex = this.state.endIndex + 20;
+    this.setState({ endIndex: lastIndex }, () => this.fetchStoriesPerPage());
+  }
+
+  componentDidMount() {
+    apiService.fetch(`/topstories`, {
       context: this,
       then(res) {
-        let actions = res.slice(0, 20).map(fetchNewsStory);
-        let results = Promise.all(actions);
-        results.then(data => this.setState({ stories: data }));
+        this.setState({ allStories: res, startIndex: 0, endIndex: 20 })
+        this.fetchStoriesPerPage();
       }
     });
   }
 
-  componentDidMount() {
-    this.fetchStoryIds();
-  }
-
   render() {
-    return (
-      <div className="app">
-        <header className="app-header">
 
-        </header>
-        <main className="app-body">
-          <div className="list-wrapper">
-            {this.state.stories.map((story) =>
-              <div key={story.id} className="story-wrapper">
-                <div className="story-header">
-                  <span>{story.rank}</span>
-                  <a href={story.url}>{story.title}</a>
-                </div>
-                <div className="story-footer">
-                  <span>{story.score}</span>
-                  <span>by <a href={story.userURL}>{story.by}</a></span>
-                  <span>{new Date(story.time * 1000).toDateString()}</span>
-                  <span><a href={story.url}>{story.comments} comments</a></span>
-                </div>
-              </div>
-            )}
+    return (
+      <div className="wrap">
+        <div className="app-header">
+          <div className="app-logo">
+            <span>HN</span>
           </div>
-        </main>
-        <footer className="appFooter">
-  
-        </footer>
+        </div>
+        <div className="app-body">
+          <Story storyItems={this.state.stories} />
+          {this.state.stories.length > 0 &&
+            <div className="btn-container">
+              <button className="btn-load" onClick={() => {this.handleClick()}}>Load More</button>
+            </div>
+          }
+        </div>
+        <div className="appFooter">
+        </div>
       </div>
     );
   }
